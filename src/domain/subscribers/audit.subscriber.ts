@@ -29,11 +29,7 @@ export class AuditSubscriber implements EntitySubscriberInterface {
       const entityName = event.metadata.name;
       const entityId = this.getEntityId(event.metadata, event.entity);
       console.log('🔔 Audit: INSERT', entityName, entityId);
-      await this.auditService.recordCreate(
-        entityName,
-        entityId,
-        event.entity,
-      );
+      await this.auditService.recordCreate(entityName, entityId, event.entity);
       console.log('✅ Audit log saved for', entityName);
     } catch (error: unknown) {
       const errorMessage =

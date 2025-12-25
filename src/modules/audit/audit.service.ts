@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ClsService } from 'nestjs-cls';
-import { AuditAction, AuditLog } from '@common/types/audit-log.type';
+import { AuditLog } from '@common/types/audit-log.type';
 import { AuditLogRepository } from '@domain/repositories/audit-log.repository';
 
 export interface CurrentUserContext {
