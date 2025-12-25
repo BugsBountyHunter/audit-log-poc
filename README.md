@@ -252,9 +252,6 @@ nestjs-audit-log/
 ├── Dockerfile                           # Production image
 ├── Dockerfile.dev                       # Development image
 ├── .dockerignore                        # Docker ignore patterns
-├── setup-databases.sh                   # Docker setup script (standalone)
-├── stop-databases.sh                    # Stop containers
-├── remove-databases.sh                  # Remove containers & data
 ├── tsconfig.json                        # TypeScript config with path aliases
 ├── package.json
 └── README.md
@@ -285,33 +282,146 @@ NODE_ENV=development
 ## Project setup
 
 ```bash
-$ npm install
+npm install --legacy-peer-deps
 ```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Docker & Docker Compose
+
+### Option 1: Run with Docker Compose ✅
+
+```bash
+# Clone repository
+git clone https://github.com/BugsBountyHunter/audit-log-poc.git
+cd audit-log-poc
+
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f app
+```
+
+Access the application at `http://localhost:3000`
+
+### Option 2: Development with Docker (Hot Reload)
+
+```bash
+# Install dependencies
+npm install --legacy-peer-deps
+
+# Start dev environment
+docker-compose -f docker-compose.dev.yml up -d
+
+# View logs
+docker-compose -f docker-compose.dev.yml logs -f app
+```
+
+Your source code changes are reflected immediately.
+
+---
+
+## 🐳 Docker Commands
+
+### Using Docker Compose (Full Stack)
+
+```bash
+# Start all services
+docker-compose up -d
+
+# Start with build
+docker-compose up -d --build
+
+# View logs
+docker-compose logs -f
+docker-compose logs -f app        # App only
+docker-compose logs -f postgres   # Postgres only
+docker-compose logs -f mongodb    # MongoDB only
+
+# Stop services
+docker-compose stop
+
+# Stop and remove containers
+docker-compose down
+
+# Remove containers and volumes (deletes data)
+docker-compose down -v
+
+# Restart a specific service
+docker-compose restart app
+```
+
+### Using Docker Compose Dev (Development Mode)
+
+```bash
+# Start dev environment with hot reload
+docker-compose -f docker-compose.dev.yml up -d
+
+# Rebuild and start
+docker-compose -f docker-compose.dev.yml up -d --build
+
+# View app logs
+docker-compose -f docker-compose.dev.yml logs -f app
+
+# Stop dev environment
+docker-compose -f docker-compose.dev.yml down
+```
+
+### Useful Docker Commands
+
+```bash
+# Check running containers
+docker ps
+
+# Check all containers (including stopped)
+docker ps -a
+
+# View container logs
+docker logs nestjs-audit-app
+docker logs nestjs-audit-postgres
+docker logs nestjs-audit-mongo
+
+# Execute commands in running container
+docker exec -it nestjs-audit-app sh
+docker exec -it nestjs-audit-postgres psql -U postgres -d audit_poc
+docker exec -it nestjs-audit-mongo mongosh
+
+# Check disk usage
+docker system df
+
+# Prune unused resources
+docker system prune
+```
+
+---
 
 ## Compile and run the project
 
 ```bash
 # development
-$ npm run start
+npm run start
 
 # watch mode
-$ npm run start:dev
+npm run start:dev
 
 # production mode
-$ npm run start:prod
+npm run start:prod
 ```
 
 ## Run tests
 
 ```bash
 # unit tests
-$ npm run test
+npm run test
 
 # e2e tests
-$ npm run test:e2e
+npm run test:e2e
 
 # test coverage
-$ npm run test:cov
+npm run test:cov
 ```
 
 ---
