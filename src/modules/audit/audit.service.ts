@@ -25,7 +25,14 @@ export class AuditService {
       userId: partial.userId ?? user?.id,
       timestamp: new Date(),
     };
+    console.log('📝 Recording audit log:', {
+      action: log.action,
+      entity: log.entity,
+      entityId: log.entityId,
+      userId: log.userId,
+    });
     await this.repository.insert(log);
+    console.log('✅ Audit log recorded to MongoDB');
   }
 
   async recordCreate(

@@ -25,33 +25,51 @@ export class AuditSubscriber implements EntitySubscriberInterface {
   }
 
   async afterInsert(event: InsertEvent<unknown>): Promise<void> {
-    const entityName = event.metadata.name;
-    const entityId = this.getEntityId(event.metadata, event.entity);
-    await this.auditService.recordCreate(entityName, entityId, event.entity);
+    try {
+      const entityName = event.metadata.name;
+      const entityId = this.getEntityId(event.metadata, event.entity);
+      console.log('🔔 Audit: INSERT', entityName, entityId);
+      await this.auditService.recordCreate(entityName, entityId, event.entity);
+      console.log('✅ Audit log saved for', entityName);
+    } catch (error) {
+      console.error('❌ Error recording audit:', error);
+    }
   }
 
   async afterUpdate(event: UpdateEvent<unknown>): Promise<void> {
-    const entityName = event.metadata.name;
-    const entityId = this.getEntityId(
-      event.metadata,
-      event.entity ?? event.databaseEntity,
-    );
-    await this.auditService.recordUpdate(
-      entityName,
-      entityId,
-      event.databaseEntity,
-      event.entity,
-    );
+    try {
+      const entityName = event.metadata.name;
+      const entityId = this.getEntityId(
+        event.metadata,
+        event.entity ?? event.databaseEntity,
+      );
+      console.log('🔔 Audit: UPDATE', entityName, entityId);
+      await this.auditService.recordUpdate(
+        entityName,
+        entityId,
+        event.databaseEntity,
+        event.entity,
+      );
+      console.log('✅ Audit log saved for', entityName);
+    } catch (error) {
+      console.error('❌ Error recording audit:', error);
+    }
   }
 
   async afterRemove(event: RemoveEvent<unknown>): Promise<void> {
-    const entityName = event.metadata.name;
-    const entityId = this.getEntityId(event.metadata, event.databaseEntity);
-    await this.auditService.recordRemove(
-      entityName,
-      entityId,
-      event.databaseEntity,
-    );
+    try {
+      const entityName = event.metadata.name;
+      const entityId = this.getEntityId(event.metadata, event.databaseEntity);
+      console.log('🔔 Audit: REMOVE', entityName, entityId);
+      await this.auditService.recordRemove(
+        entityName,
+        entityId,
+        event.databaseEntity,
+      );
+      console.log('✅ Audit log saved for', entityName);
+    } catch (error) {
+      console.error('❌ Error recording audit:', error);
+    }
   }
 
   private getEntityId(

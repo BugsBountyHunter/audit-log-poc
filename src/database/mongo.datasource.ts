@@ -11,12 +11,17 @@ export const mongoProviders: Provider[] = [
     useFactory: async (): Promise<MongoClient> => {
       const client = new MongoClient(mongoUrl);
       await client.connect();
+      console.log('✅ MongoDB connected:', mongoUrl);
       return client;
     },
   },
   {
     provide: MONGO_DB,
-    useFactory: (client: MongoClient): Db => client.db(),
+    useFactory: (client: MongoClient): Db => {
+      const db = client.db('audit_logs');
+      console.log('📊 Using MongoDB database: audit_logs');
+      return db;
+    },
     inject: [MONGO_CLIENT],
   },
 ];

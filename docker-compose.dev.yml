@@ -1,0 +1,71 @@
+services:
+  # PostgreSQL database for business data
+  postgres:
+    image: postgres:15-alpine
+    container_name: nestjs-audit-postgres-dev
+    restart: unless-stopped
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: audit_poc
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - audit-network-dev
+
+  # MongoDB database for audit logs
+  mongodb:
+    image: mongo:7
+    container_name: nestjs-audit-mongo-dev
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data_dev:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand("ping").ok']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - audit-network-dev
+
+  # NestJS application in development mode
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: nestjs-audit-app-dev
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/audit_poc
+      MONGO_URL: mongodb://mongodb:27017/audit_logs
+      PORT: 3000
+    volumes:
+      - ./src:/app/src
+      - ./node_modules:/app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    networks:
+      - audit-network-dev
+
+networks:
+  audit-network-dev:
+    driver: bridge
+
+volumes:
+  postgres_data_dev:
+  mongo_data_dev:

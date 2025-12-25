@@ -14,6 +14,12 @@ lerna-debug.log*
 
 # OS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
 # Tests
 /coverage
@@ -27,6 +33,9 @@ lerna-debug.log*
 *.launch
 .settings/
 *.sublime-workspace
+*.swp
+*.swo
+*~
 
 # IDE - VSCode
 .vscode/*
@@ -41,6 +50,7 @@ lerna-debug.log*
 .env.test.local
 .env.production.local
 .env.local
+.env.*.local
 
 # temp directory
 .temp
@@ -54,3 +64,47 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Docker volumes and data
+postgres_data/
+postgres_data_dev/
+mongo_data/
+mongo_data_dev/
+.docker/
+
+# Docker related
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Development environment
+.env.docker
+.vscode/
+.idea/
+
+# Package manager lockfiles (optional - uncomment if you want to commit them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# IDE
+.eslintignore
+.prettierignore
+
+# Build artifacts
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Miscellaneous
+.cache
+.nuxt
+dist/
+out/
+*.local
