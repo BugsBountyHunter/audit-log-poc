@@ -29,10 +29,16 @@ export class AuditSubscriber implements EntitySubscriberInterface {
       const entityName = event.metadata.name;
       const entityId = this.getEntityId(event.metadata, event.entity);
       console.log('🔔 Audit: INSERT', entityName, entityId);
-      await this.auditService.recordCreate(entityName, entityId, event.entity);
+      await this.auditService.recordCreate(
+        entityName,
+        entityId,
+        event.entity,
+      );
       console.log('✅ Audit log saved for', entityName);
-    } catch (error) {
-      console.error('❌ Error recording audit:', error);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error('❌ Error recording audit:', errorMessage);
     }
   }
 
@@ -51,8 +57,10 @@ export class AuditSubscriber implements EntitySubscriberInterface {
         event.entity,
       );
       console.log('✅ Audit log saved for', entityName);
-    } catch (error) {
-      console.error('❌ Error recording audit:', error);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error('❌ Error recording audit:', errorMessage);
     }
   }
 
@@ -67,8 +75,10 @@ export class AuditSubscriber implements EntitySubscriberInterface {
         event.databaseEntity,
       );
       console.log('✅ Audit log saved for', entityName);
-    } catch (error) {
-      console.error('❌ Error recording audit:', error);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error('❌ Error recording audit:', errorMessage);
     }
   }
 
